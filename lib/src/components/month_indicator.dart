@@ -58,7 +58,7 @@ class MonthIndicatorStyle {
       label: label ??
           () {
             context.dependOnTimetableLocalizations();
-            return DateFormat.MMMM().format(month);
+            return DateFormat('MMM yyyy').format(month);
           }(),
     );
   }

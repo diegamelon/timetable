@@ -149,7 +149,7 @@ class MonthPageController extends ChangeNotifier
   Future<void> animateTo(
     DateTime month, {
     Curve curve = Curves.easeInOut,
-    Duration duration = const Duration(milliseconds: 200),
+    Duration duration = const Duration(milliseconds: 20),
   }) async {
     await _pageController.animateToPage(
       _pageFromMonth(month),

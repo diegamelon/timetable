@@ -46,11 +46,22 @@ class _TimetableExampleState extends State<TimetableExample>
 
   final _draggedEvents = <BasicEvent>[];
 
+  DateTime? weekStardDate;
+  DateTime? weekEndDate;
+
   @override
   void dispose() {
     _timeController.dispose();
     _dateController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController.addListener(() {
+      print(_dateController.date.value);
+    });
   }
 
   @override
@@ -63,9 +74,11 @@ class _TimetableExampleState extends State<TimetableExample>
       child: Column(children: [
         _buildAppBar(),
         Expanded(
-          child: _isRecurringLayout
-              ? RecurringMultiDateTimetable<BasicEvent>()
-              : MultiDateTimetable<BasicEvent>(),
+          child:
+              // _isRecurringLayout
+              //     ? RecurringMultiDateTimetable<BasicEvent>()
+              //     :
+              MultiDateTimetable<BasicEvent>(),
         ),
       ]),
       // Optional:
@@ -84,6 +97,23 @@ class _TimetableExampleState extends State<TimetableExample>
             .toList(),
       ]),
       callbacks: TimetableCallbacks(
+        weekRange: (wsd, wed) {
+          if (weekStardDate == null && weekEndDate == null) {
+            weekStardDate = wsd;
+            weekEndDate = wed;
+            //TODO: stuff
+            print('WEEK START DATE ${weekStardDate!.toIso8601String()}');
+            print('WEEK END DATE ${weekEndDate!.toIso8601String()}');
+          } else {
+            if (weekStardDate != wsd || weekEndDate != wed) {
+              weekStardDate = wsd;
+              weekEndDate = wed;
+              //TODO: stuff
+              print('WEEK START DATE ${weekStardDate!.toIso8601String()}');
+              print('WEEK END DATE ${weekEndDate!.toIso8601String()}');
+            }
+          }
+        },
         onWeekTap: (week) {
           _showSnackBar('Tapped on week $week.');
           _updateVisibleDateRange(PredefinedVisibleDateRange.week);
@@ -196,7 +226,8 @@ class _TimetableExampleState extends State<TimetableExample>
                   _dateController.animateTo(date, vsync: this);
                 },
               ),
-              child: CompactMonthTimetable(),
+              // child: CompactMonthTimetable(),
+              child: Container(),
             );
           }),
         ),

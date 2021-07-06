@@ -34,23 +34,25 @@ class WeekIndicator extends StatelessWidget {
     this.alwaysUseNarrowestVariant = false,
     this.onTap,
     this.style,
+    this.weekRange,
   }) : super(key: key);
-  WeekIndicator.forDate(
-    DateTime date, {
-    Key? key,
-    this.alwaysUseNarrowestVariant = false,
-    this.onTap,
-    this.style,
-  })  : assert(date.isValidTimetableDate),
+
+  WeekIndicator.forDate(DateTime date,
+      {Key? key,
+      this.alwaysUseNarrowestVariant = false,
+      this.onTap,
+      this.style,
+      this.weekRange})
+      : assert(date.isValidTimetableDate),
         week = date.week,
         super(key: key);
-  static Widget forController(
-    DateController? controller, {
-    Key? key,
-    bool alwaysUseNarrowestVariant = false,
-    VoidCallback? onTap,
-    WeekIndicatorStyle? style,
-  }) =>
+
+  static Widget forController(DateController? controller,
+          {Key? key,
+          bool alwaysUseNarrowestVariant = false,
+          VoidCallback? onTap,
+          WeekIndicatorStyle? style,
+          VoidCallback? weekRange}) =>
       _WeekIndicatorForController(
         controller,
         key: key,
@@ -63,6 +65,7 @@ class WeekIndicator extends StatelessWidget {
   final bool alwaysUseNarrowestVariant;
   final VoidCallback? onTap;
   final WeekIndicatorStyle? style;
+  final VoidCallback? weekRange;
 
   @override
   Widget build(BuildContext context) {
@@ -202,6 +205,7 @@ class WeekIndicatorStyle {
         textStyle,
         DeepCollectionEquality().hash(labels),
       );
+
   @override
   bool operator ==(Object other) {
     return other is WeekIndicatorStyle &&
@@ -214,31 +218,49 @@ class WeekIndicatorStyle {
 }
 
 class _WeekIndicatorForController extends StatelessWidget {
-  const _WeekIndicatorForController(
-    this.controller, {
-    Key? key,
-    this.alwaysUseNarrowestVariant = false,
-    this.onTap,
-    this.style,
-  }) : super(key: key);
+  const _WeekIndicatorForController(this.controller,
+      {Key? key,
+      this.alwaysUseNarrowestVariant = false,
+      this.onTap,
+      this.style,
+      this.showWeekIndicator = false,
+      this.weekRange})
+      : super(key: key);
 
   final DateController? controller;
   final bool alwaysUseNarrowestVariant;
   final VoidCallback? onTap;
   final WeekIndicatorStyle? style;
+  final bool showWeekIndicator;
+  final VoidCallback? weekRange;
 
   @override
   Widget build(BuildContext context) {
+    DateTime firstDayOfWeek;
     return ValueListenableBuilder<Week>(
-      valueListenable: (controller ?? DefaultDateController.of(context)!)
-          .date
-          .map((it) => it.week),
-      builder: (context, week, _) => WeekIndicator(
-        week,
-        alwaysUseNarrowestVariant: alwaysUseNarrowestVariant,
-        onTap: onTap,
-        style: style,
+      valueListenable:
+          (controller ?? DefaultDateController.of(context)!).date.map((it) {
+        firstDayOfWeek = it.add(Duration(days: 1)).week.getDayOfWeek(1);
+        final defaultWeekRange =
+            DefaultTimetableCallbacks.of(context)?.weekRange;
+        updateWeekRange(defaultWeekRange, firstDayOfWeek,
+            firstDayOfWeek.add(Duration(days: 6)));
+        return firstDayOfWeek.week;
+      }),
+      builder: (context, week, _) => Visibility(
+        visible: !showWeekIndicator,
+        child: WeekIndicator(
+          week,
+          alwaysUseNarrowestVariant: alwaysUseNarrowestVariant,
+          onTap: onTap,
+          style: style,
+        ),
       ),
     );
+  }
+
+  void updateWeekRange(WeekRange? defaultWeekRange, DateTime firstDayOfWeek,
+      DateTime lastDayOfWeek) {
+    defaultWeekRange!(firstDayOfWeek, lastDayOfWeek);
   }
 }

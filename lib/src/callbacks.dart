@@ -9,6 +9,7 @@ import 'week.dart';
 typedef WeekTapCallback = void Function(Week week);
 typedef DateTapCallback = void Function(DateTime date);
 typedef DateTimeTapCallback = void Function(DateTime dateTime);
+typedef WeekRange = void Function(DateTime weekStartDate, DateTime weekEndDate);
 
 @immutable
 class TimetableCallbacks {
@@ -17,12 +18,16 @@ class TimetableCallbacks {
     this.onDateTap,
     this.onDateBackgroundTap,
     this.onDateTimeBackgroundTap,
+    this.weekRange,
   });
 
   /// Called when the user taps on a week.
   ///
   /// Used internally by [WeekIndicator].
   final WeekTapCallback? onWeekTap;
+
+  ///Get week range
+  final WeekRange? weekRange;
 
   /// Called when the user taps on a date.
   ///
@@ -56,6 +61,7 @@ class TimetableCallbacks {
     bool clearOnDateBackgroundTap = false,
     DateTimeTapCallback? onDateTimeBackgroundTap,
     bool clearOnDateTimeBackgroundTap = false,
+    WeekRange? weekRange,
   }) {
     assert(!(clearOnWeekTap && onWeekTap != null));
     assert(!(clearOnDateTap && onDateTap != null));
@@ -63,15 +69,15 @@ class TimetableCallbacks {
     assert(!(clearOnDateTimeBackgroundTap && onDateTimeBackgroundTap != null));
 
     return TimetableCallbacks(
-      onWeekTap: clearOnWeekTap ? null : onWeekTap ?? this.onWeekTap,
-      onDateTap: clearOnDateTap ? null : onDateTap ?? this.onDateTap,
-      onDateBackgroundTap: clearOnDateBackgroundTap
-          ? null
-          : onDateBackgroundTap ?? this.onDateBackgroundTap,
-      onDateTimeBackgroundTap: clearOnDateTimeBackgroundTap
-          ? null
-          : onDateTimeBackgroundTap ?? this.onDateTimeBackgroundTap,
-    );
+        onWeekTap: clearOnWeekTap ? null : onWeekTap ?? this.onWeekTap,
+        onDateTap: clearOnDateTap ? null : onDateTap ?? this.onDateTap,
+        onDateBackgroundTap: clearOnDateBackgroundTap
+            ? null
+            : onDateBackgroundTap ?? this.onDateBackgroundTap,
+        onDateTimeBackgroundTap: clearOnDateTimeBackgroundTap
+            ? null
+            : onDateTimeBackgroundTap ?? this.onDateTimeBackgroundTap,
+        weekRange: weekRange ?? this.weekRange);
   }
 
   @override

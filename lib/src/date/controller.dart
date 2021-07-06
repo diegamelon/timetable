@@ -55,7 +55,7 @@ class DateController extends ValueNotifier<DatePageValue> {
 
   Future<void> animateToToday({
     Curve curve = Curves.easeInOut,
-    Duration duration = const Duration(milliseconds: 200),
+    Duration duration = const Duration(milliseconds: 20),
     required TickerProvider vsync,
   }) {
     return animateTo(
@@ -69,7 +69,7 @@ class DateController extends ValueNotifier<DatePageValue> {
   Future<void> animateTo(
     DateTime date, {
     Curve curve = Curves.easeInOut,
-    Duration duration = const Duration(milliseconds: 200),
+    Duration duration = const Duration(milliseconds: 20),
     required TickerProvider vsync,
   }) {
     return animateToPage(
@@ -83,7 +83,7 @@ class DateController extends ValueNotifier<DatePageValue> {
   Future<void> animateToPage(
     double page, {
     Curve curve = Curves.easeInOut,
-    Duration duration = const Duration(milliseconds: 200),
+    Duration duration = const Duration(milliseconds: 20),
     required TickerProvider vsync,
   }) async {
     _animationController?.dispose();
