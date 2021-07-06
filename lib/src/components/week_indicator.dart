@@ -248,7 +248,7 @@ class _WeekIndicatorForController extends StatelessWidget {
         return firstDayOfWeek.week;
       }),
       builder: (context, week, _) => Visibility(
-        visible: !showWeekIndicator,
+        visible: showWeekIndicator,
         child: WeekIndicator(
           week,
           alwaysUseNarrowestVariant: alwaysUseNarrowestVariant,

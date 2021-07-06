@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+
 import 'week.dart';
 
 /// Provides localized strings for Timetable widgets.
@@ -41,6 +42,8 @@ class TimetableLocalizationsDelegate
         return const TimetableLocalizationDe();
       case 'en':
         return const TimetableLocalizationEn();
+      case 'es':
+        return const TimetableLocalizationEs();
       default:
         return null;
     }
@@ -144,4 +147,22 @@ class TimetableLocalizationEn extends TimetableLocalizations {
   @override
   String weekOfYear(Week week) =>
       'Week ${week.weekOfYear}, ${week.weekBasedYear}';
+}
+
+class TimetableLocalizationEs extends TimetableLocalizations {
+  const TimetableLocalizationEs();
+
+  @override
+  List<String> weekLabels(Week week) {
+    return [
+      weekOfYear(week),
+      'Semana ${week.weekOfYear}',
+      'S ${week.weekOfYear}',
+      '${week.weekOfYear}',
+    ];
+  }
+
+  @override
+  String weekOfYear(Week week) =>
+      'Semana ${week.weekOfYear}, ${week.weekBasedYear}';
 }
