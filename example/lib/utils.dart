@@ -10,7 +10,8 @@ final _mediaOverrideState = ValueNotifier(MediaOverrideState());
 final _supportedLocales = [
   const Locale('de'),
   const Locale('en'),
-  const Locale('es')
+  const Locale('es'),
+  const Locale('ca')
 ];
 
 void initDebugOverlay() {
@@ -38,7 +39,7 @@ class ExampleApp extends StatelessWidget {
           theme: _createTheme(Brightness.light),
           darkTheme: _createTheme(Brightness.dark),
           themeMode: overrideState.themeMode,
-          locale: overrideState.locale,
+          locale: Locale('ca'),
           localizationsDelegates: [
             TimetableLocalizationsDelegate(),
             GlobalMaterialLocalizations.delegate,

@@ -44,6 +44,8 @@ class TimetableLocalizationsDelegate
         return const TimetableLocalizationEn();
       case 'es':
         return const TimetableLocalizationEs();
+      case 'ca':
+        return const TimetableLocalizationCa();
       default:
         return null;
     }
@@ -165,4 +167,22 @@ class TimetableLocalizationEs extends TimetableLocalizations {
   @override
   String weekOfYear(Week week) =>
       'Semana ${week.weekOfYear}, ${week.weekBasedYear}';
+}
+
+class TimetableLocalizationCa extends TimetableLocalizations {
+  const TimetableLocalizationCa();
+
+  @override
+  List<String> weekLabels(Week week) {
+    return [
+      weekOfYear(week),
+      'setmana ${week.weekOfYear}',
+      'S ${week.weekOfYear}',
+      '${week.weekOfYear}',
+    ];
+  }
+
+  @override
+  String weekOfYear(Week week) =>
+      'setmana ${week.weekOfYear}, ${week.weekBasedYear}';
 }
